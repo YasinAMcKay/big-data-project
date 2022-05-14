@@ -1,0 +1,4 @@
+#assign reviews with score >4 as positive sentiment
+
+df = df[df['rating'] != 5]
+df['sentiment'] = df ['rating'].apply(lambda rating : +1 if rating >5 else -1)
