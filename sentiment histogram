@@ -1,0 +1,7 @@
+df['sentiment'] = df["sentiment"].replace({-1 : 'negative'})
+df['sentiment'] = df['sentiment'].replace({1 : 'positive'})
+fig = px.histogram(df, x='sentiment')
+fig.update_traces(marker_color='indianred', marker_line_color='rgb(8,48,107)',
+                  marker_line_width=1.5)
+fig.update_layout(title_text='game sentiment')
+fig.show()
