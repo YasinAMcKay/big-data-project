@@ -1,0 +1,12 @@
+#import nltk
+#from nltk.corpus import stopwords
+#nltk.download('stopwords')
+#stopwords = set("STOPWORDS")
+#stopwords.update(["br", "href"])
+#textt = " ".join(review for review in df.tex)
+#wordcloud = WordCloud(stopwords=stopwords).generate(textt)
+
+#plt.imshow(wordcloud, interpolation='bilinear')
+#plt.axis("off")
+#plt.savefig('wordcloud39.png')
+#plt.show()
