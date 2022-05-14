@@ -1,0 +1,3 @@
+#split df - positive and negative
+positive = df[df["sentiment"] ==1]
+negative = df[df['sentiment'] == -1]
