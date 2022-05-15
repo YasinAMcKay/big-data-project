@@ -1,0 +1,14 @@
+import csv
+
+filename = 'total_review_direct'
+
+with open(filename, 'r') as csvfile:
+  csvreader = csv.reader(csvfile)
+  
+  fields = next(csvreader)
+  
+  for row in csvreader:
+    row.append(row)
+  
+  print("total no. of rows: %d"%d(csvreader.line_num))
+  
