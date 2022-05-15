@@ -1,0 +1,908 @@
+###########################################################################################
+#                                  Data Science Project                                   #
+#                                           V1                                            #
+#                                By: Yasin McKay CU1900325                                #
+###########################################################################################
+#from selenium import webdriver
+from bs4 import BeautifulSoup as bs
+import pandas as pd
+import requests
+
+#driver = webdriver.Chrome("/Documents/chromedriver")
+
+reviewcritic=[] #List to store name of critic
+reviewgrade=[] #List to store number grade the critic gave
+reviewbody=[] #List to store verbal review given
+#driver.get("https://www.metacritic.com/game/pc/elden-ring/user-reviews")
+main_url = "https://www.metacritic.com/game/pc/elden-ring/user-reviews"
+
+#content = driver.page_source
+
+response = requests.get(main_url)
+soup = bs(response.content, 'html.parser')
+#soup = BeautifulSoup(content)
+for a in soup.findAll('a',href=True, attrs={'class':'review_section'}):
+    reviewcritic=a.find('div', attrs={'class':'name'})
+    reviewgrade=a.find('div', attrs={'class':'review_grade'})
+    reviewbody=a.find('div', attrs={'class':'review_body'})
+    reviewcritic.append(reviewcritic.text)
+    reviewgrade.append(reviewgrade.text)
+    reviewbody.append(reviewbody.text)
+
+
+df = pd.DataFrame({'Reviewer Name':reviewcritic,'Grade':reviewgrade,'Reviewer Opinion':reviewbody})
+df.to_csv('eldenring.csv', index=False, encoding='utf-8')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##############################################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,40): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/switch/the-legend-of-zelda-breath-of-the-wild/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("BOTW_review_direct.csv")
+
+
+
+
+
+
+################################################3
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,6): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/counter-strike-global-offensive/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("csgo_review_direct.csv")
+
+
+
+
+
+
+
+
+#####################################################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+for page in range(0,5): #the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/dark-souls-iii/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("darksoulsIII_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+#################
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,30): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/death-stranding/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("death_stranding_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+####################################################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,3): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/fortnite/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("fortnite_review_direct.csv")
+
+
+
+
+################################################################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,20): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/god-of-war/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("godofwar_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+#sword and shield
+for page in range(0,7): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/grand-theft-auto-v/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("gta_v_review_direct.csv")
+
+
+
+
+################################################################################
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,15): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/xbox-series-x/halo-infinite/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("Halo_Infinite_review_direct.csv")
+
+
+
+
+
+
+############################################################
+
+
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+#sword and shield
+for page in range(0,45): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-5/horizon-forbidden-west/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("horizonfw_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###############################################################################
+
+
+
+
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,15): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/minecraft/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+
+
+
+
+
+
+######################################################################################
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+#sword and shield
+for page in range(0,4): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/tom-clancys-rainbow-six-siege/user-reviews?sort-by=score&num_items=100?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("r6_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################################################################################################
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,15): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/red-dead-redemption-2/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("reddead_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##########################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+#sword and shield
+for page in range(0,23): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/switch/pokemon-sword/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("review_direct.csv")
+
+
+
+
+
+
+
+
+
+#################################################################################################
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,3): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/terraria/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("terarria_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#############################################
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,10): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/playstation-4/the-last-of-us-remastered/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("TLOU_review_direct.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################
+
+
+
+
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,5): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/undertale/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("undertale_review_direct.csv")
+
+
+
+
+
+
+
+##############################################
+
+
+import requests 
+from bs4 import BeautifulSoup
+import pandas as pd
+#import time
+#import random as rand 
+
+
+review_dict = {'name':[], 'date':[], 'rating':[], 'review':[]}
+
+
+
+#elden ring
+for page in range(0,15): #Remember to update the number of pages 
+    url = 'https://www.metacritic.com/game/pc/valorant/user-reviews?page='+str(page)
+    user_agent = {'User-agent': 'Mozilla/5.0'}
+    response  = requests.get(url, headers = user_agent)
+    #time.sleep(rand.randint(3,30)) 
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for review in soup.find_all('div', class_='review_content'):
+        if review.find('div', class_='name') == None:
+                       break 
+        review_dict['name'].append(review.find('div', class_='name').find('a').text)
+        review_dict['date'].append(review.find('div', class_='date').text)
+        review_dict['rating'].append(review.find('div', class_='review_grade').find_all('div')[0].text)
+        if review.find('span', class_='blurb blurb_expanded'):
+            review_dict['review'].append(review.find('span', class_='blurb blurb_expanded').text)
+        else:
+            review_dict['review'].append(review.find('div', class_='review_body').find('span').text)
+
+
+
+
+
+sword_reviews = pd.DataFrame(review_dict) 
+sword_reviews.to_csv("valorant_review_direct.csv")
+
+
+
+############################
+
+
